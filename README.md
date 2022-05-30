@@ -1,2 +1,2 @@
 # MyIPL
-With use of Android JetpackCompose List render
+With use of Android JetpackCompose LazyColumn render
