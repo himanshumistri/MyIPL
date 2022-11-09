@@ -19,6 +19,10 @@ class IplViewModel :ViewModel() {
         mMutableIplList.add(iplTeam)
     }
 
+    fun addAll(listItem: ArrayList<IplTeam>){
+        mMutableIplList.addAll(listItem)
+    }
+
     fun isEmpty() : Boolean{
        return mMutableIplList.isEmpty()
     }

@@ -6,10 +6,8 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
@@ -19,21 +17,40 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
-import androidx.lifecycle.viewmodel.compose.viewModel
+import coil.compose.AsyncImage
 import com.compose.myipl.data.IplTeam
+import com.compose.myipl.repository.TeamDataImpl
 import com.compose.myipl.ui.theme.MyIPLTheme
 import com.compose.myipl.viewmodel.IplViewModel
-import kotlinx.coroutines.delay
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     //private var mIplTeamList = ArrayList<IplTeam>()
     private var mIplViewModel: IplViewModel ? = null
     private var mHandler = Handler()
 
+    @Inject lateinit var mIplDataImpl: TeamDataImpl
+
+    /**
+     * Coroutines job
+     */
+    private var mJob = SupervisorJob()
+
+    /**
+     * Coroutine scope required for launch and this call be used to cancel all coroutine launch
+     */
+    private var mViewModelScope= CoroutineScope(Dispatchers.Main +mJob)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,12 +68,12 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        mHandler.postDelayed({
+        /*mHandler.postDelayed({
             if(mIplViewModel!!.isEmpty()){
 
-                for (i in 0 .. 10){
+                for (i in 0..10){
 
-                    val teamName ="Team $i"
+                    val teamName ="Team India $i"
                     val ipTeam = IplTeam(teamName = teamName)
 
                     mIplViewModel?.addTeam(ipTeam)
@@ -64,8 +81,13 @@ class MainActivity : ComponentActivity() {
                 }
                // mIplViewModel?.ad(mIplViewModel?.getIplList()!!)
             }
-        },1000L)
+        },1000L)*/
 
+
+        mViewModelScope.launch {
+            val teamList = mIplDataImpl.getTeamList()
+            mIplViewModel?.addAll(teamList)
+        }
 
     }
 
@@ -84,7 +106,13 @@ class MainActivity : ComponentActivity() {
         }else{
             LazyColumn(contentPadding = PaddingValues(10.dp)){
                 items(iplViewModel.getList()) {  item: IplTeam ->
-                    Text(text = item.teamName, color = Color.Black, fontFamily = FontFamily.Serif, fontSize = 18.sp)
+                    Spacer(modifier = Modifier.height(10.dp))
+                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.background(color = Color.LightGray), verticalAlignment = Alignment.CenterVertically) {
+                        AsyncImage(model = item.url,
+                            contentDescription =item.teamName, modifier = Modifier.size(100.dp,90.dp), placeholder = painterResource(
+                                id = R.drawable.image_not_supported) )
+                        Text(text = item.teamName, color = Color.Black, fontFamily = FontFamily.Serif, fontSize = 18.sp)
+                    }
                 }
             }
         }
