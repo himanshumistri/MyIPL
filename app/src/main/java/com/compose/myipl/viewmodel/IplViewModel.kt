@@ -20,6 +20,7 @@ class IplViewModel :ViewModel() {
     }
 
     fun addAll(listItem: ArrayList<IplTeam>){
+        mMutableIplList.clear()
         mMutableIplList.addAll(listItem)
     }
 

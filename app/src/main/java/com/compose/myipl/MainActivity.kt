@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.*
 import coil.compose.AsyncImage
 import com.compose.myipl.data.IplTeam
 import com.compose.myipl.repository.TeamDataImpl
+import com.compose.myipl.ui.theme.HeaderColor
 import com.compose.myipl.ui.theme.MyIPLTheme
 import com.compose.myipl.viewmodel.IplViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,6 +40,7 @@ class MainActivity : ComponentActivity() {
     //private var mIplTeamList = ArrayList<IplTeam>()
     private var mIplViewModel: IplViewModel ? = null
     private var mHandler = Handler()
+    private var mHeaderHeight=58.dp
 
     @Inject lateinit var mIplDataImpl: TeamDataImpl
 
@@ -104,17 +106,28 @@ class MainActivity : ComponentActivity() {
             }
 
         }else{
-            LazyColumn(contentPadding = PaddingValues(10.dp)){
-                items(iplViewModel.getList()) {  item: IplTeam ->
-                    Spacer(modifier = Modifier.height(10.dp))
-                    Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.background(color = Color.LightGray), verticalAlignment = Alignment.CenterVertically) {
-                        AsyncImage(model = item.url,
-                            contentDescription =item.teamName, modifier = Modifier.size(100.dp,90.dp), placeholder = painterResource(
-                                id = R.drawable.image_not_supported) )
-                        Text(text = item.teamName, color = Color.Black, fontFamily = FontFamily.Serif, fontSize = 18.sp)
+            
+            Column(modifier = Modifier.fillMaxSize()) {
+
+                Row(modifier = Modifier.fillMaxWidth().height(mHeaderHeight).background(HeaderColor)) {
+                    
+                }
+
+                LazyColumn(contentPadding = PaddingValues(start = 5.dp, end = 5.dp)){
+                    items(iplViewModel.getList()) {  item: IplTeam ->
+                        Spacer(modifier = Modifier.height(10.dp))
+                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp), modifier = Modifier.background(color = Color.LightGray), verticalAlignment = Alignment.CenterVertically) {
+                            AsyncImage(model = item.url,
+                                contentDescription =item.teamName, modifier = Modifier.size(100.dp,90.dp), placeholder = painterResource(
+                                    id = R.drawable.image_not_supported) )
+                            Text(text = item.teamName, color = Color.Black, fontFamily = FontFamily.Serif, fontSize = 18.sp)
+                        }
                     }
                 }
+                
             }
+            
+            
         }
     }
 }
