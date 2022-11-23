@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">MyIPL</string>
+    <string name="team">Team</string>
+    <string name="won">Won</string>
+    <string name="lost">Lost</string>
+    <string name="played">Played</string>
 </resources>

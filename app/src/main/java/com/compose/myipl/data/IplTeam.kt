@@ -14,4 +14,7 @@ data class IplTeam(@SerializedName("name") var teamName : String){
 
     @SerializedName("url")
     var url : String =""
+
+    @SerializedName("played")
+    var matchPlayed : Int = 0
 }

@@ -1,12 +1,17 @@
 package com.compose.myipl.viewmodel
 
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
 
 import androidx.lifecycle.ViewModel
 import com.compose.myipl.data.IplTeam
+import com.compose.myipl.data.SortType
 
 class IplViewModel :ViewModel() {
     private var mMutableIplList = mutableStateListOf<IplTeam>()
+    private var mImgBoarderState = mutableStateOf(false)
+    private var mActiveSortType = mutableStateOf(SortType.NAME)
+
     /*init {
         mMutableIplList.clear()
     }*/
@@ -15,11 +20,47 @@ class IplViewModel :ViewModel() {
         mMutableIplList.value = list
     }*/
 
+    fun setSortType(sortType: SortType){
+        mActiveSortType.value = sortType
+    }
+
     fun addTeam(iplTeam : IplTeam){
         mMutableIplList.add(iplTeam)
     }
 
+    fun performSorting(sortType: SortType, isAsc: Boolean){
+
+        when(sortType){
+
+            SortType.NAME->{
+                val list =mMutableIplList.sortedWith(Comparator { t1, t2 ->
+                    if(isAsc){
+                        t1.teamName.compareTo(t2.teamName)
+                    }else{
+                        t2.teamName.compareTo(t1.teamName)
+                    }
+                })
+                addAll(list.toMutableList())
+
+            }
+            SortType.WON->{
+
+            }
+            SortType.LOST->{
+
+
+            }
+            else -> {}
+        }
+
+    }
+
     fun addAll(listItem: ArrayList<IplTeam>){
+        mMutableIplList.clear()
+        mMutableIplList.addAll(listItem)
+    }
+
+    private fun addAll(listItem: MutableList<IplTeam>){
         mMutableIplList.clear()
         mMutableIplList.addAll(listItem)
     }
@@ -37,6 +78,14 @@ class IplViewModel :ViewModel() {
 
     fun getIplList():MutableListIterator<IplTeam>{
         return  mMutableIplList.listIterator()
+    }
+
+    fun getImageBoarder(): Boolean{
+        return mImgBoarderState.value
+    }
+
+    fun setImageBoarder(isBoarder: Boolean){
+        mImgBoarderState.value = isBoarder
     }
 
 }
