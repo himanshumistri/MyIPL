@@ -4,4 +4,5 @@
     <string name="won">Won</string>
     <string name="lost">Lost</string>
     <string name="played">Played</string>
+    <string name="show_no_teams">No WorldCup T20 Team available to show</string>
 </resources>

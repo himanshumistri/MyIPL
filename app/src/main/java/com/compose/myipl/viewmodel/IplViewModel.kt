@@ -6,11 +6,20 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.compose.myipl.data.IplTeam
 import com.compose.myipl.data.SortType
+import com.compose.myipl.utils.LogUtils
 
 class IplViewModel :ViewModel() {
+    private val  mTag="IplViewModel"
     private var mMutableIplList = mutableStateListOf<IplTeam>()
     private var mImgBoarderState = mutableStateOf(false)
     private var mActiveSortType = mutableStateOf(SortType.NAME)
+
+    init {
+        //Default Sort Type would be Team Name sorting
+        mActiveSortType.value = SortType.NAME
+        LogUtils.i(mTag,"Init Default Sort type when app lunch ${mActiveSortType.value }")
+    }
+
 
     /*init {
         mMutableIplList.clear()
@@ -22,6 +31,10 @@ class IplViewModel :ViewModel() {
 
     fun setSortType(sortType: SortType){
         mActiveSortType.value = sortType
+    }
+
+    fun getSortType(): SortType{
+        return mActiveSortType.value
     }
 
     fun addTeam(iplTeam : IplTeam){
@@ -44,13 +57,29 @@ class IplViewModel :ViewModel() {
 
             }
             SortType.WON->{
-
+                val list =mMutableIplList.sortedWith(Comparator { t1, t2 ->
+                    if(isAsc){
+                        t1.matchWin.compareTo(t2.matchWin)
+                    }else{
+                        t2.matchWin.compareTo(t1.matchWin)
+                    }
+                })
+                addAll(list.toMutableList())
             }
             SortType.LOST->{
-
+                val list =mMutableIplList.sortedWith(Comparator { t1, t2 ->
+                    if(isAsc){
+                        t1.matchLoss.compareTo(t2.matchLoss)
+                    }else{
+                        t2.matchLoss.compareTo(t1.matchLoss)
+                    }
+                })
+                addAll(list.toMutableList())
 
             }
-            else -> {}
+            else -> {
+
+            }
         }
 
     }

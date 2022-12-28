@@ -59,6 +59,7 @@ class MainActivity : ComponentActivity(),CoroutineScope {
     private var mIplViewModel: IplViewModel ? = null
     private var mHandler = Handler()
     private var mHeaderHeight=58.dp
+    private var mSpaceTxtImg = 20.dp
 
     @Inject lateinit var mIplDataImpl: TeamDataImpl
 
@@ -126,9 +127,6 @@ class MainActivity : ComponentActivity(),CoroutineScope {
         val mSortAscDscLostIs  = remember {
             mutableStateOf(AppConstants.SORT_ASC)
         }
-        val mSortAscDscPlayedIs  = remember {
-            mutableStateOf(AppConstants.SORT_ASC)
-        }
 
         val isBoarder = iplViewModel.getImageBoarder()
 
@@ -149,7 +147,7 @@ class MainActivity : ComponentActivity(),CoroutineScope {
             Log.i("TAG","List is Empty")
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                 //Put your Compose View here to make it center in this Box
-                Text(text = "No IPL Team available to show", color = Color.Magenta, fontFamily = FontFamily.Default, fontSize = 18.sp)
+                Text(text = stringResource(id = R.string.show_no_teams), color = Color.Magenta, fontFamily = FontFamily.Default, fontSize = 18.sp)
             }
 
         }else{
@@ -162,7 +160,7 @@ class MainActivity : ComponentActivity(),CoroutineScope {
                         .height(mHeaderHeight)
                         .background(HeaderColor), verticalAlignment = Alignment.CenterVertically) {
                         Row(modifier = Modifier
-                            .weight(0.4F)
+                            .weight(0.40F)
                             .clickable(enabled = true) {
                                 if (mSortAscDscNameIs.value == AppConstants.SORT_ASC) {
                                     mSortAscDscNameIs.value = AppConstants.SORT_DESC
@@ -171,36 +169,84 @@ class MainActivity : ComponentActivity(),CoroutineScope {
                                     mSortAscDscNameIs.value = AppConstants.SORT_ASC
                                     mIplViewModel?.performSorting(SortType.NAME, true)
                                 }
+                                iplViewModel.setSortType(SortType.NAME)
                             }, verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = stringResource(id = R.string.team), style = MaterialTheme.typography.h1, modifier = Modifier
-                                .fillMaxWidth(0.7F)
-                                .padding(start = 10.dp), fontWeight = FontWeight.Bold)
-                            Image(painter = if(mSortAscDscNameIs.value == AppConstants.SORT_ASC) {
-                                painterResource(id = R.drawable.sort_by_alpha)
-                            }else{
-                                painterResource(id = R.drawable.sort_by_alpha)
-                                 }, contentDescription = mSortAscDscNameIs.value )
+                            Row(modifier = Modifier.fillMaxSize(),verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = stringResource(id = R.string.team), style = MaterialTheme.typography.h1, modifier = Modifier.padding(start = 10.dp), fontWeight =
+                                if(iplViewModel.getSortType() == SortType.NAME){
+                                    FontWeight.Bold
+                                }else {
+                                    FontWeight.Light
+                                })
+                                Spacer(modifier = Modifier.width(mSpaceTxtImg))
+                                Image(painter = if(mSortAscDscNameIs.value == AppConstants.SORT_ASC) {
+                                    painterResource(id = R.drawable.sort_by_alpha)
+                                }else{
+                                    painterResource(id = R.drawable.sort_by_alpha)
+                                }, contentDescription = mSortAscDscNameIs.value )
+                            }
                         }
-                        
                         Row(modifier = Modifier.weight(0.15F)) {
-                            Text(text = stringResource(id = R.string.played), style = MaterialTheme.typography.h1, textAlign = TextAlign.Center, modifier = Modifier.background(color = Color.Magenta))
+                            //modifier = Modifier.background(color = Color.Magenta)
+                            Text(text = stringResource(id = R.string.played), style = MaterialTheme.typography.h1, textAlign = TextAlign.Center,
+                                fontWeight = FontWeight.Light)
                         }
-                        Row(modifier = Modifier.weight(0.25F),verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = stringResource(id = R.string.won), style = MaterialTheme.typography.h1, modifier = Modifier.fillMaxWidth(0.7F))
-                            Image(painter = if(mSortAscDscWonIs.value == AppConstants.SORT_ASC) {
-                                painterResource(id = R.drawable.north)
-                            }else{
-                                painterResource(id = R.drawable.south)
-                            }, contentDescription = mSortAscDscWonIs.value )
+                        Row(modifier = Modifier
+                            .weight(0.25F)
+                            .clickable(enabled = true) {
+                                if (mSortAscDscWonIs.value == AppConstants.SORT_ASC) {
+                                    mSortAscDscWonIs.value = AppConstants.SORT_DESC
+                                    mIplViewModel?.performSorting(SortType.WON, false)
+                                } else {
+                                    mSortAscDscWonIs.value = AppConstants.SORT_ASC
+                                    mIplViewModel?.performSorting(SortType.WON, true)
+                                }
+                                iplViewModel.setSortType(SortType.WON)
+                            },verticalAlignment = Alignment.CenterVertically) {
+                            Row(modifier = Modifier.fillMaxSize(),verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = stringResource(id = R.string.won), style = MaterialTheme.typography.h1,
+                                    fontWeight = if(iplViewModel.getSortType() == SortType.WON){
+                                        FontWeight.Bold
+                                    }else {
+                                        FontWeight.Light
+                                    })
+                                Spacer(modifier = Modifier.width(mSpaceTxtImg))
+                                Image(painter = if(mSortAscDscWonIs.value == AppConstants.SORT_ASC) {
+                                    painterResource(id = R.drawable.north)
+                                }else{
+                                    painterResource(id = R.drawable.south)
+                                }, contentDescription = mSortAscDscWonIs.value )
+                            }
                         }
-                        Row(modifier = Modifier.weight(0.25F),verticalAlignment = Alignment.CenterVertically) {
-                            Text(text = stringResource(id = R.string.lost), style = MaterialTheme.typography.h1,modifier = Modifier.fillMaxWidth(0.7F)
-                                .background(color = Color.Magenta))
-                            Image(painter = if(mSortAscDscLostIs.value == AppConstants.SORT_ASC) {
-                                painterResource(id = R.drawable.north)
-                            }else{
-                                painterResource(id = R.drawable.south)
-                            }, contentDescription = mSortAscDscLostIs.value )
+                        Row(modifier = Modifier
+                            .weight(0.25F)
+                            .clickable(enabled = true) {
+                                if (mSortAscDscLostIs.value == AppConstants.SORT_ASC) {
+                                    mSortAscDscLostIs.value = AppConstants.SORT_DESC
+                                    mIplViewModel?.performSorting(SortType.LOST, false)
+                                } else {
+                                    mSortAscDscLostIs.value = AppConstants.SORT_ASC
+                                    mIplViewModel?.performSorting(SortType.LOST, true)
+                                }
+                                iplViewModel.setSortType(SortType.LOST)
+
+                            },verticalAlignment = Alignment.CenterVertically) {
+                            //.background(color = Color.Magenta)
+                            Row(modifier = Modifier.fillMaxSize(),verticalAlignment = Alignment.CenterVertically) {
+                                Text(text = stringResource(id = R.string.lost), style = MaterialTheme.typography.h1
+                                    , fontWeight = if(iplViewModel.getSortType() == SortType.LOST){
+                                        FontWeight.Bold
+                                    }else {
+                                        FontWeight.Light
+                                    })
+                                Spacer(modifier = Modifier.width(mSpaceTxtImg))
+                                Image(painter = if(mSortAscDscLostIs.value == AppConstants.SORT_ASC) {
+                                    painterResource(id = R.drawable.north)
+                                }else{
+                                    painterResource(id = R.drawable.south)
+                                }, contentDescription = mSortAscDscLostIs.value )
+                            }
+
                         }
                     }
                 }
@@ -213,7 +259,7 @@ class MainActivity : ComponentActivity(),CoroutineScope {
                             //modifier = Modifier.background(color = Color.LightGray) Check Row Color
                             Row(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalAlignment = Alignment.CenterVertically) {
                                 //Column 1
-                                Row(modifier = Modifier.weight(0.5F),verticalAlignment = Alignment.CenterVertically) {
+                                Row(modifier = Modifier.weight(0.55F),verticalAlignment = Alignment.CenterVertically) {
                                     AsyncImage(model = item.url,
                                         contentDescription =item.teamName, modifier = imgModifier , placeholder = painterResource(
                                             id = R.drawable.image_not_supported) )
@@ -224,10 +270,10 @@ class MainActivity : ComponentActivity(),CoroutineScope {
                                 Row(modifier = Modifier.weight(0.10F)) {
                                     Text(text = item.matchPlayed.toString(), color = Color.Black, fontFamily = FontFamily.Serif, fontSize = 18.sp)
                                 }
-                                Row(modifier = Modifier.weight(0.20F)) {
+                                Row(modifier = Modifier.weight(0.25F)) {
                                     Text(text = item.matchWin.toString(), color = Color.Green, fontFamily = FontFamily.Serif, fontSize = 18.sp, fontWeight = FontWeight.Bold)
                                 }
-                                Row(modifier = Modifier.weight(0.20F)) {
+                                Row(modifier = Modifier.weight(0.25F)) {
                                     Text(text = item.matchLoss.toString(), color = Color.Red, fontFamily = FontFamily.Serif, fontSize = 18.sp,fontWeight = FontWeight.Bold)
                                 }
 

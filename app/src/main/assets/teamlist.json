@@ -1,13 +1,14 @@
 {
-  "list": [{
-    "name": "India",
-    "url": "https://www.countryflags.com/wp-content/uploads/india-flag-png-large.png",
-    "rank": 1,
-    "win": 4,
-    "loss": 1,
-    "played": 5,
-    "html": ""
-  },
+  "list": [
+    {
+      "name": "India",
+      "url": "https://www.countryflags.com/wp-content/uploads/india-flag-png-large.png",
+      "rank": 1,
+      "win": 4,
+      "loss": 1,
+      "played": 5,
+      "html": ""
+    },
     {
       "name": "Pakistan",
       "url": "https://www.countryflags.com/wp-content/uploads/pakistan-flag-png-large.png",
@@ -15,14 +16,16 @@
       "win": 3,
       "loss": 2,
       "played": 5
-    }, {
+    },
+    {
       "name": "South Africa",
       "url": "https://www.countryflags.com/wp-content/uploads/south-africa-flag-png-large.png",
       "rank": 1,
       "win": 2,
       "loss": 2,
       "played": 5
-    }, {
+    },
+    {
       "name": "Netherlands",
       "url": "https://www.countryflags.com/wp-content/uploads/netherlands-flag-png-large.png",
       "rank": 1,
@@ -44,6 +47,54 @@
       "rank": 1,
       "win": 1,
       "loss": 3,
+      "played": 5
+    },
+    {
+      "name": "Australia",
+      "url": "https://cdn.countryflags.com/thumbs/australia/flag-800.png",
+      "rank": 1,
+      "win": 3,
+      "loss": 1,
+      "played": 5
+    },
+    {
+      "name": "New Zealand",
+      "url": "https://cdn.countryflags.com/thumbs/new-zealand/flag-800.png",
+      "rank": 1,
+      "win": 3,
+      "loss": 1,
+      "played": 5
+    },
+    {
+      "name": "England",
+      "url": "https://cdn.countryflags.com/thumbs/england/flag-800.png",
+      "rank": 1,
+      "win": 5,
+      "loss": 1,
+      "played": 6
+    },
+    {
+      "name": "Sri Lanka",
+      "url": "https://cdn.countryflags.com/thumbs/sri-lanka/flag-800.png",
+      "rank": 1,
+      "win": 2,
+      "loss": 3,
+      "played": 5
+    },
+    {
+      "name": "Ireland",
+      "url": "https://cdn.countryflags.com/thumbs/ireland/flag-800.png",
+      "rank": 1,
+      "win": 1,
+      "loss": 3,
+      "played": 5
+    },
+    {
+      "name": "Afghanistan",
+      "url": "https://cdn.countryflags.com/thumbs/afghanistan/flag-800.png",
+      "rank": 1,
+      "win": 3,
+      "loss": 0,
       "played": 5
     }
   ]
