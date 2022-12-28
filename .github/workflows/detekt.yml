@@ -40,7 +40,6 @@ jobs:
  #Add new job for the Android Apk build
   apk:
     name: Generate APK
-    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
