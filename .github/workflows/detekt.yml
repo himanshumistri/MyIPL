@@ -38,23 +38,24 @@ env:
 jobs:
   # This workflow contains a single job called "scan"
  #Add new job for the Android Apk build
-  apkBuild:
-     name: MyIPL
-     runs-on : ubuntu-latest
-     steps:
+  apk:
+    name: Generate APK
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
       - name: Checkout
         uses: actions/checkout@v1
       - name: Setup JDK
         uses: actions/setup-java@v1
-         with:
-           java-version: 1.8
+        with:
+          java-version: 1.8
       - name: Build APK
-      - run: bash ./gradlew assembleDebug --stacktrace
+        run: bash ./gradlew assembleDebug --stacktrace
       - name: Upload APK
         uses: actions/upload-artifact@v1
-         with:
-            name: MyIPLApk
-            path: app/build/outputs/apk/debug/app-debug.apk
+        with:
+          name: apk
+          path: app/build/outputs/apk/debug/app-debug.apk
 #  scan:
 #    name: Scan
 #    # The type of runner that the job will run on
