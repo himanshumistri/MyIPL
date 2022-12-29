@@ -40,7 +40,9 @@ jobs:
  #Add new job for the Android Apk build
   apk:
     name: Generate APK
-    runs-on: ubuntu-latest
+    # Runs on Define which system to be used to build the source code ubuntu-20.04 or ubuntu-18.04, For
+    # Mac OS one can use macos-12
+    runs-on: ubuntu-20.04
     steps:
       - name: Checkout
         uses: actions/checkout@v1
