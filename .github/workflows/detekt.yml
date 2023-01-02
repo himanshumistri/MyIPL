@@ -55,8 +55,8 @@ jobs:
       - name: Upload APK
         uses: actions/upload-artifact@v1
         with:
-          name: apk
-          path: app/build/outputs/apk/debug/app-debug.apk
+            path: ${{ github.workspace }}/Artifacts
+            name: ${{ github.run_number }}
 #  scan:
 #    name: Scan
 #    # The type of runner that the job will run on
