@@ -52,11 +52,17 @@ jobs:
           java-version: 11
       - name: Build APK
         run: bash ./gradlew assembleDebug --stacktrace
-      - name: Upload APK
-        uses: actions/upload-artifact@v1
-        with:
-            path: ${{ github.workspace }}/Artifacts
-            name: ${{ github.run_number }}
+       - name: Upload APK
+       uses: skx/github-action-publish-binaries@master
+       env:
+         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+       with:
+         args: 'debug-apk'
+#      - name: Upload APK
+#        uses: actions/upload-artifact@v1
+#        with:
+#            path: ${{ github.workspace }}/Artifacts
+#            name: ${{ github.run_number }}
 #  scan:
 #    name: Scan
 #    # The type of runner that the job will run on
