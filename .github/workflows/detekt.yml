@@ -54,10 +54,10 @@ jobs:
         run: bash ./gradlew assembleDebug --stacktrace
       - name: Upload APK
         uses: skx/github-action-publish-binaries@master
-       env:
-         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-       with:
-         args: 'debug-apk'
+        env:
+            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+           args: 'debug-apk'
 #      - name: Upload APK
 #        uses: actions/upload-artifact@v1
 #        with:
