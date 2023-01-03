@@ -58,7 +58,7 @@ jobs:
             GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
            releaseId: 'MyWorldCupApp'
-           args: 'app-debug.apk'
+           args: '/home/runner/work/MyIPL/MyIPL/app/build/outputs/apk/debug/app-debug.apk'
 #      - name: Upload APK
 #        uses: actions/upload-artifact@v1
 #        with:
