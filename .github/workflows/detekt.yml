@@ -52,6 +52,8 @@ jobs:
           java-version: 11
       - name: Build APK
         run: bash ./gradlew assembleDebug --stacktrace
+      - name: Generate the artifacts
+        uses: skx/github-action-build@master
       - name: Upload APK
         uses: skx/github-action-publish-binaries@master
         env:
