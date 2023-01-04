@@ -52,15 +52,18 @@ jobs:
           java-version: 11
       - name: Build APK
         run: bash ./gradlew assembleDebug --stacktrace
-      - name: Generate the artifacts
-        uses: skx/github-action-build@master
       - name: Upload APK
-        uses: skx/github-action-publish-binaries@master
-        env:
-            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: actions/upload-artifact@v1
         with:
-           releaseId: 'MyWorldCupApp'
-           args: '/home/runner/work/MyIPL/MyIPL/app/build/outputs/apk/debug/app-debug.apk'
+            name: apk
+            path: app/build/outputs/apk/debug/app-debug.apk
+#      - name: Upload APK
+#        uses: skx/github-action-publish-binaries@master
+#        env:
+#            GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#        with:
+#           releaseId: 'MyWorldCupApp'
+#           args: '/home/runner/work/MyIPL/MyIPL/app/build/outputs/apk/debug/app-debug.apk'
 #      - name: Upload APK
 #        uses: actions/upload-artifact@v1
 #        with:
