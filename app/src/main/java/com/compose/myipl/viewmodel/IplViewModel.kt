@@ -13,6 +13,7 @@ class IplViewModel :ViewModel() {
     private var mMutableIplList = mutableStateListOf<IplTeam>()
     private var mImgBoarderState = mutableStateOf(false)
     private var mActiveSortType = mutableStateOf(SortType.NAME)
+    private var mIsAscSort = mutableStateOf(true)
 
     init {
         //Default Sort Type would be Team Name sorting
@@ -20,17 +21,16 @@ class IplViewModel :ViewModel() {
         LogUtils.i(mTag,"Init Default Sort type when app lunch ${mActiveSortType.value }")
     }
 
-
-    /*init {
-        mMutableIplList.clear()
-    }*/
-
-    /*fun setIplList(list:ArrayList<IplTeam>){
-        mMutableIplList.value = list
-    }*/
-
     fun setSortType(sortType: SortType){
         mActiveSortType.value = sortType
+    }
+
+    private fun setIsAscSort(ascSort: Boolean){
+        mIsAscSort.value = ascSort
+    }
+
+    fun getAscSort(): Boolean{
+        return mIsAscSort.value
     }
 
     fun getSortType(): SortType{
@@ -42,6 +42,7 @@ class IplViewModel :ViewModel() {
     }
 
     fun performSorting(sortType: SortType, isAsc: Boolean){
+        setIsAscSort(isAsc)
 
         when(sortType){
 
@@ -97,9 +98,7 @@ class IplViewModel :ViewModel() {
     fun isEmpty() : Boolean{
        return mMutableIplList.isEmpty()
     }
-   /* fun getList(): androidx.compose.runtime.mutableStateListOf<IplTeam> {
-        return mMutableIplList
-    }*/
+
 
     fun getList() : List<IplTeam>{
         return mMutableIplList.toList()

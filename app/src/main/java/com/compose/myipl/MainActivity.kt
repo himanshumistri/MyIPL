@@ -1,7 +1,6 @@
 package com.compose.myipl
 
 import android.os.Bundle
-import android.os.Handler
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -28,12 +27,12 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.dimensionResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.*
+import androidx.lifecycle.Observer
 import coil.compose.AsyncImage
 import com.compose.myipl.data.IplTeam
 import com.compose.myipl.data.SortType
@@ -55,25 +54,14 @@ import kotlin.coroutines.CoroutineContext
 @AndroidEntryPoint
 class MainActivity : ComponentActivity(),CoroutineScope {
 
-    //private var mIplTeamList = ArrayList<IplTeam>()
     private var mIplViewModel: IplViewModel ? = null
-    private var mHandler = Handler()
     private var mHeaderHeight=58.dp
     private var mSpaceTxtImg = 20.dp
 
     @Inject lateinit var mIplDataImpl: TeamDataImpl
 
-    /**
-     * Coroutines job
-     */
-    private var mJob = SupervisorJob()
-
     private lateinit var job: Job
 
-    /**
-     * Coroutine scope required for launch and this call be used to cancel all coroutine launch
-     */
-    private var mViewModelScope= CoroutineScope(Dispatchers.Main +mJob)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -92,30 +80,15 @@ class MainActivity : ComponentActivity(),CoroutineScope {
             }
         }
 
-        /*mHandler.postDelayed({
-            if(mIplViewModel!!.isEmpty()){
-
-                for (i in 0..10){
-
-                    val teamName ="Team India $i"
-                    val ipTeam = IplTeam(teamName = teamName)
-
-                    mIplViewModel?.addTeam(ipTeam)
-
-                }
-               // mIplViewModel?.ad(mIplViewModel?.getIplList()!!)
-            }
-        },1000L)*/
-
-
+       val dataObserver = Observer<ArrayList<IplTeam>>{
+           mIplViewModel?.addAll(it)
+           mIplViewModel?.performSorting(mIplViewModel!!.getSortType(),mIplViewModel!!.getAscSort())
+       }
        launch {
-           val teamList = mIplDataImpl.getTeamList()
-           mIplViewModel?.addAll(teamList)
+           mIplDataImpl.getTeamList().observe(this@MainActivity,dataObserver)
         }
-
     }
 
-    //@OptIn(ExperimentalFoundationApi::class, ExperimentalUnitApi::class)
     @Composable
     fun IplList(iplViewModel: IplViewModel){
         val mSortAscDscNameIs  = remember {
@@ -160,7 +133,7 @@ class MainActivity : ComponentActivity(),CoroutineScope {
                         .height(mHeaderHeight)
                         .background(HeaderColor), verticalAlignment = Alignment.CenterVertically) {
                         Row(modifier = Modifier
-                            .weight(0.40F)
+                            .weight(0.35F)
                             .clickable(enabled = true) {
                                 if (mSortAscDscNameIs.value == AppConstants.SORT_ASC) {
                                     mSortAscDscNameIs.value = AppConstants.SORT_DESC
@@ -186,7 +159,7 @@ class MainActivity : ComponentActivity(),CoroutineScope {
                                 }, contentDescription = mSortAscDscNameIs.value )
                             }
                         }
-                        Row(modifier = Modifier.weight(0.15F)) {
+                        Row(modifier = Modifier.weight(0.20F)) {
                             //modifier = Modifier.background(color = Color.Magenta)
                             Text(text = stringResource(id = R.string.played), style = MaterialTheme.typography.h1, textAlign = TextAlign.Center,
                                 fontWeight = FontWeight.Light)
