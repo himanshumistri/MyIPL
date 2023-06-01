@@ -10,12 +10,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -73,7 +71,7 @@ class MainActivity : ComponentActivity(),CoroutineScope {
                 // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
+                    color = MaterialTheme.colorScheme.background
                 ) {
                     IplList(mIplViewModel!!)
                 }
@@ -145,7 +143,7 @@ class MainActivity : ComponentActivity(),CoroutineScope {
                                 iplViewModel.setSortType(SortType.NAME)
                             }, verticalAlignment = Alignment.CenterVertically) {
                             Row(modifier = Modifier.fillMaxSize(),verticalAlignment = Alignment.CenterVertically) {
-                                Text(text = stringResource(id = R.string.team), style = MaterialTheme.typography.h1, modifier = Modifier.padding(start = 10.dp), fontWeight =
+                                Text(text = stringResource(id = R.string.team), style = MaterialTheme.typography.headlineMedium, modifier = Modifier.padding(start = 10.dp), fontWeight =
                                 if(iplViewModel.getSortType() == SortType.NAME){
                                     FontWeight.Bold
                                 }else {
@@ -161,7 +159,7 @@ class MainActivity : ComponentActivity(),CoroutineScope {
                         }
                         Row(modifier = Modifier.weight(0.20F)) {
                             //modifier = Modifier.background(color = Color.Magenta)
-                            Text(text = stringResource(id = R.string.played), style = MaterialTheme.typography.h1, textAlign = TextAlign.Center,
+                            Text(text = stringResource(id = R.string.played), style = MaterialTheme.typography.headlineMedium, textAlign = TextAlign.Center,
                                 fontWeight = FontWeight.Light)
                         }
                         Row(modifier = Modifier
@@ -177,7 +175,7 @@ class MainActivity : ComponentActivity(),CoroutineScope {
                                 iplViewModel.setSortType(SortType.WON)
                             },verticalAlignment = Alignment.CenterVertically) {
                             Row(modifier = Modifier.fillMaxSize(),verticalAlignment = Alignment.CenterVertically) {
-                                Text(text = stringResource(id = R.string.won), style = MaterialTheme.typography.h1,
+                                Text(text = stringResource(id = R.string.won), style = MaterialTheme.typography.headlineMedium,
                                     fontWeight = if(iplViewModel.getSortType() == SortType.WON){
                                         FontWeight.Bold
                                     }else {
@@ -206,7 +204,7 @@ class MainActivity : ComponentActivity(),CoroutineScope {
                             },verticalAlignment = Alignment.CenterVertically) {
                             //.background(color = Color.Magenta)
                             Row(modifier = Modifier.fillMaxSize(),verticalAlignment = Alignment.CenterVertically) {
-                                Text(text = stringResource(id = R.string.lost), style = MaterialTheme.typography.h1
+                                Text(text = stringResource(id = R.string.lost), style = MaterialTheme.typography.headlineMedium
                                     , fontWeight = if(iplViewModel.getSortType() == SortType.LOST){
                                         FontWeight.Bold
                                     }else {
@@ -228,7 +226,7 @@ class MainActivity : ComponentActivity(),CoroutineScope {
                         Spacer(modifier = Modifier.height(10.dp))
                         Card(modifier = Modifier
                             .fillMaxWidth()
-                            .background(color = Color.White), elevation = 5.dp) {
+                            .background(color = Color.White), elevation = CardDefaults.cardElevation(5.dp)) {
                             //modifier = Modifier.background(color = Color.LightGray) Check Row Color
                             Row(horizontalArrangement = Arrangement.spacedBy(5.dp), verticalAlignment = Alignment.CenterVertically) {
                                 //Column 1
@@ -284,6 +282,10 @@ fun CenterView(){
             fontFamily = FontFamily.Default,
             fontSize = TextUnit(18.0F,
             TextUnitType.Sp))
+
+        Text(text = "I will be at Top | Left", modifier = Modifier.align(Alignment.TopStart))
+
+        Text(text = "I will be at Top | Right", modifier = Modifier.align(Alignment.TopEnd))
     }
 }
 
